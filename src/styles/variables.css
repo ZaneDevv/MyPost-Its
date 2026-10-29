@@ -1,0 +1,58 @@
+:root {
+    /* ------------------------------------------------------
+        GENERAL APP COLORS
+    ------------------------------------------------------ */
+
+    --background-primary: #F8F9FC;
+    --background-secondary: #FFFFFF;
+    --background-tertiary: #F0F2F7;
+
+    --text-primary: #252836;
+    --text-secondary: #6B7085;
+    --text-muted: #9CA3B5;
+
+    --border: #E5E7EF;
+    --divider: #ECEEF4;
+
+    --accent: #7C83FD;
+    --accent-hover: #656DE8;
+    --accent-light: #EEF0FF;
+
+    --success: #4CAF8A;
+    --warning: #F4B860;
+    --danger: #E57373;
+
+    /* ------------------------------------------------------
+        POST-ITS COLORS
+    ------------------------------------------------------ */
+
+    --note-yellow-header: #F5D76E;
+    --note-yellow-body: #FFF4C2;
+
+    --note-pink-header: #F4A7B9;
+    --note-pink-body: #FFE1E9;
+
+    --note-green-header: #98D5A7;
+    --note-green-body: #DDF5E3;
+
+    --note-blue-header: #91C5F5;
+    --note-blue-body: #DCEEFF;
+
+    --note-peach-header: #F7B992;
+    --note-peach-body: #FFE6D5;
+
+    --note-purple-header: #B9A3EB;
+    --note-purple-body: #EBE2FF;
+
+    --note-orange-header: #F5AC6B;
+    --note-orange-body: #FFE1C2;
+
+    --note-mint-header: #8ED9CC;
+    --note-mint-body: #D9F7F0;
+
+    --note-coral-header: #EF9993;
+    --note-coral-body: #FFE0DC;
+
+    --note-gray-header: #BCC3D0;
+    --note-gray-body: #EBEEF3;
+}

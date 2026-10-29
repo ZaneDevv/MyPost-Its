@@ -1,23 +1,22 @@
-* {
-    margin: 0;
-    padding: 0;
+/* ------------------------------------------------------
+    GLOBAL
+------------------------------------------------------ */
 
-    box-sizing: border-box;
-}
+@import url(./normalization.css);
+@import url(./variables.css);
 
-header, footer {
-    padding: 0.5em;
-}
+/* ------------------------------------------------------
+    LAYOUT
+------------------------------------------------------ */
 
-header {
-    box-shadow: 0 1px 2px 0 #0005;
-}
+@import url(./layout/dimensions.css);
+@import url(./layout/header.css);
+@import url(./layout/footer.css);
+@import url(./layout/board.css);
 
-footer {
-    color: white;
-    background-color: #313131;
-}
+/* ------------------------------------------------------
+    SOURCES
+------------------------------------------------------ */
 
-#board {
-
-}
+@import url(./sources/texts.css);
+@import url(./sources/urls.css);
