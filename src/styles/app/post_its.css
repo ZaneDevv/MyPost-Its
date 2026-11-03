@@ -3,6 +3,8 @@
     height: 200px;
 
     border-radius: var(--border-radius-post-it);
+
+    position: absolute;
 }
 
 .post-it div {
@@ -12,6 +14,10 @@
 
     border-top-left-radius: var(--border-radius-post-it);
     border-top-right-radius: var(--border-radius-post-it);
+}
+
+.post-it div:hover {
+    cursor: pointer;
 }
 
 .post-it p {

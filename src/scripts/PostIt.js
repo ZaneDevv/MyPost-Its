@@ -20,6 +20,8 @@ export class PostIt
     // ------------------------------------------------------
 
     #htmlElement = undefined;
+    #topBar = undefined;
+    #textElement = undefined;
 
     #color = "";
     #text = "";
@@ -65,13 +67,13 @@ export class PostIt
         this.#htmlElement = document.createElement("div");
         this.#htmlElement.classList = `${POST_IT_CLASS} ${CLASS_BACKGROUND_COLOR_PERFIX}${this.color}`;
 
-        const topBar = document.createElement("div");
-        topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.color}`;
+        this.#topBar = document.createElement("div");
+        this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.color}`;
 
-        const text = document.createElement("p");
+        this.#textElement = document.createElement("p");
         
-        this.#htmlElement.appendChild(topBar);
-        this.#htmlElement.appendChild(text);
+        this.#htmlElement.appendChild(this.#topBar);
+        this.#htmlElement.appendChild(this.#textElement);
         POST_ITS_PARENT.appendChild(this.#htmlElement);
     }
 
@@ -109,7 +111,7 @@ export class PostIt
 
     set position(value)
     {
-        if (value === "object")
+        if (typeof value === "object")
         {
             this.#position.x = value.x || 0;
             this.#position.y = value.x || 0;
