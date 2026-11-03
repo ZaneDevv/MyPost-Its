@@ -1,0 +1,22 @@
+.post-it {
+    width: 200px;
+    height: 200px;
+
+    border-radius: var(--border-radius-post-it);
+}
+
+.post-it div {
+    width: 100%;
+    height: 10%;
+    max-height: 30px;
+
+    border-top-left-radius: var(--border-radius-post-it);
+    border-top-right-radius: var(--border-radius-post-it);
+}
+
+.post-it p {
+    width: 100%;
+    height: 90%;
+
+    bottom: 0;
+}

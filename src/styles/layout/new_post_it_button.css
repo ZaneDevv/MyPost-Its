@@ -1,0 +1,35 @@
+#new-post-it-button {
+    font-size: 2em;
+    font-weight: bolder;
+
+    background-color: var(--background-secondary);
+    box-shadow: 0 0 2px -1px black;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    right: 25px;
+    bottom: 25px;
+
+    padding: 1em;
+
+    transform: none;
+}
+
+#new-post-it-button:hover {
+    cursor: pointer;
+
+    animation: 0.2s linear new-post-it-button-hover-animation;
+    transform: rotate(25deg) scale(1.1);
+}
+
+@keyframes new-post-it-button-hover-animation {
+    from {
+        transform: 0;
+    }
+
+    to {
+        transform: rotate(10deg) scale(1.1);
+    }
+}

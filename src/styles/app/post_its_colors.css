@@ -1,0 +1,79 @@
+.background-yellow {
+    background-color: var(--note-yellow-body);
+}
+
+.top-bar-yellow {
+    background-color: var(--note-yellow-header);
+}
+
+.background-pink {
+    background-color: var(--note-pink-body);
+}
+
+.top-bar-pink {
+    background-color: var(--note-pink-header);
+}
+
+.background-green {
+    background-color: var(--note-green-body);
+}
+
+.top-bar-green {
+    background-color: var(--note-green-header);
+}
+
+.background-blue {
+    background-color: var(--note-blue-body);
+}
+
+.top-bar-blue {
+    background-color: var(--note-blue-header);
+}
+
+.background-peach {
+    background-color: var(--note-peach-body);
+}
+
+.top-bar-peach {
+    background-color: var(--note-peach-header);
+}
+
+.background-purple {
+    background-color: var(--note-purple-body);
+}
+
+.top-bar-purple {
+    background-color: var(--note-purple-header);
+}
+
+.background-orange {
+    background-color: var(--note-orange-body);
+}
+
+.top-bar-orange {
+    background-color: var(--note-orange-header);
+}
+
+.background-mint {
+    background-color: var(--note-mint-body);
+}
+
+.top-bar-mint {
+    background-color: var(--note-mint-header);
+}
+
+.background-coral {
+    background-color: var(--note-coral-body);
+}
+
+.top-bar-coral {
+    background-color: var(--note-coral-header);
+}
+
+.background-gray {
+    background-color: var(--note-gray-body);
+}
+
+.top-bar-gray {
+    background-color: var(--note-gray-header);
+}

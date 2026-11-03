@@ -13,6 +13,7 @@
 @import url(./layout/header.css);
 @import url(./layout/footer.css);
 @import url(./layout/board.css);
+@import url(./layout/new_post_it_button.css);
 
 /* ------------------------------------------------------
     SOURCES
@@ -20,3 +21,10 @@
 
 @import url(./sources/texts.css);
 @import url(./sources/urls.css);
+
+/* ------------------------------------------------------
+    APP
+------------------------------------------------------ */
+
+@import url(./app/post_its.css);
+@import url(./app/post_its_colors.css);
