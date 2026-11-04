@@ -1,11 +1,8 @@
+import { POST_IT_CLASS, CLASS_BACKGROUND_COLOR_PERFIX, CLASS_TOP_BAR_COLOR_PERFIX, CLASS_POST_IT_TEXT } from './config/post_it.js';
+
 // ------------------------------------------------------
 // CONSTANTS
 // ------------------------------------------------------
-
-const POST_IT_CLASS = "post-it";
-
-const CLASS_BACKGROUND_COLOR_PERFIX = "background-";
-const CLASS_TOP_BAR_COLOR_PERFIX = "top-bar-";
 
 const POST_ITS_PARENT = document.querySelectorAll("main")[0];
 
@@ -71,6 +68,8 @@ export class PostIt
         this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.color}`;
 
         this.#textElement = document.createElement("p");
+        this.#textElement.className = CLASS_POST_IT_TEXT;
+        this.#textElement.addEventListener("blur", () => this.#textElement.contentEditable = "false");
         
         this.#htmlElement.appendChild(this.#topBar);
         this.#htmlElement.appendChild(this.#textElement);

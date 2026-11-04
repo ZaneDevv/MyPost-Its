@@ -1,3 +1,5 @@
+import { CLASS_TOP_BAR_COLOR_PERFIX } from '../config/post_it.js';
+
 // ------------------------------------------------------
 // CONSTANTS
 // ------------------------------------------------------
@@ -23,7 +25,7 @@ let offsetY = 0;
  * @returns True if the given element is the top bar of any post-it, false otherwise
  * @author Álvaro Fernández Barrero
  */
-const isPostItTopBar = element => element.className.slice(0, 7).toLowerCase() === "top-bar";
+const isPostItTopBar = element => element.className.toLowerCase().startsWith(CLASS_TOP_BAR_COLOR_PERFIX);
 
 /**
  * Drags the selected post-it
@@ -49,14 +51,14 @@ export function initializeDraggingPostIts()
             return;
 
         target = event.target.parentElement;
-
-        offsetX = event.clientX - Number(target.style.left.slice(0, target.style.left.length - 2));
-        offsetY = event.clientY - Number(target.style.top.slice(0, target.style.top.length - 2));
-
+        
         setTimeout(() => {
             if (target === undefined)
                 return;
-
+            
+            offsetX = event.clientX - Number(target.style.left.slice(0, target.style.left.length - 2));
+            offsetY = event.clientY - Number(target.style.top.slice(0, target.style.top.length - 2));
+            
             document.addEventListener("mousemove", drag);
         }, MILLISECONDS_TO_WAIT_TO_START_DRAGGING);
     });

@@ -1,4 +1,5 @@
 import { initializeDraggingPostIts } from './mouse/mouse_dragger.js';
+import { initializeTextChanger } from './mouse/mouse_text_changer.js';
 
 /**
  * Initializes the mouse's events
@@ -7,4 +8,5 @@ import { initializeDraggingPostIts } from './mouse/mouse_dragger.js';
 export function initializeMouseEvents()
 {
     initializeDraggingPostIts();
+    initializeTextChanger();
 }
