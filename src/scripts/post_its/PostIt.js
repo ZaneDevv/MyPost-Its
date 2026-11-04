@@ -80,6 +80,15 @@ export class PostIt
         POST_ITS_PARENT.appendChild(this.#htmlElement);
     }
 
+    /**
+     * Removes the post-it
+     * @author Álvaro Fernández Barrero
+     */
+    remove()
+    {
+        this.#htmlElement.remove();
+    }
+
     // ------------------------------------------------------
     // GETTER & SETTER
     // ------------------------------------------------------
