@@ -1,4 +1,5 @@
 import { CLASS_TOP_BAR_COLOR_PERFIX } from '../config/post_it.js';
+import { getPostItByElement } from '../post_its/post_its_map.js';
 
 // ------------------------------------------------------
 // CONSTANTS
@@ -34,8 +35,10 @@ const isPostItTopBar = element => element.className.toLowerCase().startsWith(CLA
  */
 function drag(event)
 {
-    target.style.left = `${Math.max(0, event.clientX - offsetX)}px`;
-    target.style.top = `${Math.max(0, event.clientY - offsetY)}px`;
+    target.position = {
+        x: Math.max(0, event.clientX - offsetX),
+        y: Math.max(0, event.clientY - offsetY)
+    };
 }
 
 /**
@@ -50,14 +53,14 @@ export function initializeDraggingPostIts()
         if (!isPostItTopBar(event.target))
             return;
 
-        target = event.target.parentElement;
+        target = getPostItByElement(event.target.parentElement);
         
         setTimeout(() => {
             if (target === undefined)
                 return;
             
-            offsetX = event.clientX - Number(target.style.left.slice(0, target.style.left.length - 2));
-            offsetY = event.clientY - Number(target.style.top.slice(0, target.style.top.length - 2));
+            offsetX = event.clientX - target.position.x;
+            offsetY = event.clientY - target.position.y;
             
             document.addEventListener("mousemove", drag);
         }, MILLISECONDS_TO_WAIT_TO_START_DRAGGING);

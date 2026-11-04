@@ -1,4 +1,4 @@
-import { PostIt } from './PostIt.js';
+import { PostIt } from './post_its/PostIt.js';
 import { initializeMouseEvents } from './mouse.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 

@@ -1,4 +1,5 @@
-import { POST_IT_CLASS, CLASS_BACKGROUND_COLOR_PERFIX, CLASS_TOP_BAR_COLOR_PERFIX, CLASS_POST_IT_TEXT } from './config/post_it.js';
+import { POST_IT_CLASS, CLASS_BACKGROUND_COLOR_PERFIX, CLASS_TOP_BAR_COLOR_PERFIX, CLASS_POST_IT_TEXT } from '../config/post_it.js';
+import { savePostItUnderHtmlElement } from './post_its_map.js';
 
 // ------------------------------------------------------
 // CONSTANTS
@@ -41,11 +42,11 @@ export class PostIt
      */
     constructor(text = "", position = {x: 0, y: 0}, color = "coral")
     {
+        this.#generateHtmlElements();
+
         this.text = text;
         this.position = position;
         this.color = color;
-
-        this.#generateHtmlElements();
     }
 
     // ------------------------------------------------------
@@ -70,9 +71,12 @@ export class PostIt
         this.#textElement = document.createElement("p");
         this.#textElement.className = CLASS_POST_IT_TEXT;
         this.#textElement.addEventListener("blur", () => this.#textElement.contentEditable = "false");
+
+        savePostItUnderHtmlElement(this.#htmlElement, this);
         
         this.#htmlElement.appendChild(this.#topBar);
         this.#htmlElement.appendChild(this.#textElement);
+
         POST_ITS_PARENT.appendChild(this.#htmlElement);
     }
 
@@ -101,6 +105,9 @@ export class PostIt
     set color(value)
     {
         this.#color = value;
+
+        this.#htmlElement.classList = `${POST_IT_CLASS} ${CLASS_BACKGROUND_COLOR_PERFIX}${value}`;
+        this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${value}`;
     }
 
     get position()
@@ -113,7 +120,10 @@ export class PostIt
         if (typeof value === "object")
         {
             this.#position.x = value.x || 0;
-            this.#position.y = value.x || 0;
+            this.#position.y = value.y || 0;
+
+            this.#htmlElement.style.left = `${this.#position.x}px`;
+            this.#htmlElement.style.top = `${this.#position.y}px`;
         }
         else
             console.warn("The position you have tried to set is not an object");
