@@ -6,14 +6,17 @@ import { POST_IT_CLASS } from '../config/post_it.js'
 // CONSTANTS
 // ------------------------------------------------------
 
-const MINIMUM_MOVEMENT = 50;
+const MINIMUM_MOVEMENT = 150;
+const EPSILON_Y = 100;
 
 // ------------------------------------------------------
 // VARIABLES
 // ------------------------------------------------------
 
 let target = undefined;
+
 let startingX = 0;
+let startingY = 0;
 
 // ------------------------------------------------------
 // METHODS
@@ -50,7 +53,9 @@ export function initializeSwipper()
         if (hasTag(parent, POST_IT_CLASS))
         {
             target = getPostItByElement(parent);
+            
             startingX = event.clientX;
+            startingY = event.clientY;
         }
     });
     
@@ -65,8 +70,9 @@ export function initializeSwipper()
         }
 
         const deltaX = event.clientX - startingX;
+        const deltaY = event.clientY - startingY;
         
-        if (Math.abs(deltaX) < MINIMUM_MOVEMENT)
+        if (Math.abs(deltaX) < MINIMUM_MOVEMENT || Math.abs(deltaY) >= EPSILON_Y)
             return;
     
         if (confirm("Are you sure you want to remove this post-it?"))

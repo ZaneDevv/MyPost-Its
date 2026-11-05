@@ -86,7 +86,7 @@ export class PostIt
 
         savePostItUnderHtmlElement(this.#htmlElement, this);
 
-        this.#htmlElement.appendChild(this.#menuColorButton);
+        this.#topBar.appendChild(this.#menuColorButton);
         this.#htmlElement.appendChild(this.#topBar);
         this.#htmlElement.appendChild(this.#textElement);
 
