@@ -12,6 +12,7 @@ const MILLISECONDS_TO_WAIT_TO_START_DRAGGING = 500;
 // ------------------------------------------------------
 
 let target = undefined;
+let movingTarget = undefined;
 
 let offsetX = 0;
 let offsetY = 0;
@@ -19,6 +20,13 @@ let offsetY = 0;
 // ------------------------------------------------------
 // METHODS
 // ------------------------------------------------------
+
+/**
+ * Gets the HTML post-it element that is currently being dragged
+ * @returns The post-it that is being currently dragged
+ * @author Álvaro Fernández Barrero
+ */
+export const getPostItMoving = () => movingTarget;
 
 /**
  * Checks if the given HTML element corresponds to the top bar of any post-it
@@ -58,6 +66,8 @@ export function initializeDraggingPostIts()
         setTimeout(() => {
             if (target === undefined)
                 return;
+
+            movingTarget = target;
             
             offsetX = event.clientX - target.position.x;
             offsetY = event.clientY - target.position.y;
@@ -70,6 +80,7 @@ export function initializeDraggingPostIts()
         event.preventDefault();
         document.removeEventListener("mousemove", drag);
 
+        movingTarget = undefined;
         target = undefined;
     });
 }

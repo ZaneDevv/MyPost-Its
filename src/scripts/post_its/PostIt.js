@@ -1,5 +1,11 @@
-import { POST_IT_CLASS, CLASS_BACKGROUND_COLOR_PERFIX, CLASS_TOP_BAR_COLOR_PERFIX, CLASS_POST_IT_TEXT } from '../config/post_it.js';
 import { savePostItUnderHtmlElement } from './post_its_map.js';
+import {
+    POST_IT_CLASS,
+    CLASS_BACKGROUND_COLOR_PERFIX,
+    CLASS_TOP_BAR_COLOR_PERFIX,
+    CLASS_POST_IT_TEXT,
+    CLASS_MENU_COLOR_POST_IT
+} from '../config/post_it.js';
 
 // ------------------------------------------------------
 // CONSTANTS
@@ -19,6 +25,7 @@ export class PostIt
 
     #htmlElement = undefined;
     #topBar = undefined;
+    #menuColorButton = undefined;
     #textElement = undefined;
 
     #color = "";
@@ -72,8 +79,14 @@ export class PostIt
         this.#textElement.className = CLASS_POST_IT_TEXT;
         this.#textElement.addEventListener("blur", () => this.#textElement.contentEditable = "false");
 
+        this.#menuColorButton = document.createElement("img");
+        this.#menuColorButton.src = "./src/img/menu.svg";
+        this.#menuColorButton.alt = "Menu colors";
+        this.#menuColorButton.className = CLASS_MENU_COLOR_POST_IT;
+
         savePostItUnderHtmlElement(this.#htmlElement, this);
-        
+
+        this.#htmlElement.appendChild(this.#menuColorButton);
         this.#htmlElement.appendChild(this.#topBar);
         this.#htmlElement.appendChild(this.#textElement);
 

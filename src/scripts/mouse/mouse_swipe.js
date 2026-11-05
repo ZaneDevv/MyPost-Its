@@ -1,4 +1,5 @@
 import { getPostItByElement } from '../post_its/post_its_map.js';
+import { getPostItMoving } from './mouse_dragger.js';
 import { POST_IT_CLASS } from '../config/post_it.js'
 
 // ------------------------------------------------------
@@ -48,7 +49,7 @@ export function initializeSwipper()
         
         if (hasTag(parent, POST_IT_CLASS))
         {
-            target = parent;
+            target = getPostItByElement(parent);
             startingX = event.clientX;
         }
     });
@@ -57,6 +58,12 @@ export function initializeSwipper()
         if (!target)
             return;
     
+        if (getPostItMoving() === target)
+        {
+            target = undefined;
+            return;
+        }
+
         const deltaX = event.clientX - startingX;
         
         if (Math.abs(deltaX) < MINIMUM_MOVEMENT)
@@ -64,7 +71,7 @@ export function initializeSwipper()
     
         if (confirm("Are you sure you want to remove this post-it?"))
         {
-            getPostItByElement(target).remove();
+            target.remove();
             target = undefined;
         }
     });
