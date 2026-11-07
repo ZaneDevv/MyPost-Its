@@ -1,8 +1,11 @@
 import { PostIt } from './post_its/PostIt.js';
 import { initializeMouseEvents } from './mouse.js';
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { initializeDatabase, loadAllPostIts } from "./database/database.js";
 
 window.onload = () => {
+    initializeDatabase();
+    loadAllPostIts();
+
     const newPostItButton = document.getElementById("new-post-it-button");
 
     newPostItButton.addEventListener("click", () => {
