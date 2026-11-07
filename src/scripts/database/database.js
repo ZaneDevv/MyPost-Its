@@ -20,7 +20,8 @@ const COLLECTION_NAME = "postit";
 
 let app = undefined;
 let database = undefined;
-let collection = undefined;
+
+let postItCollection = undefined;
 
 // ------------------------------------------------------
 // METHODS
@@ -32,9 +33,9 @@ let collection = undefined;
  */
 export function initializeDatabase()
 {
-    app = initializeApp();
+    app = initializeApp(firebaseConfig);
     database = getFirestore(app);
-    collection = collection(database, COLLECTION_NAME);
+    postItCollection = collection(database, COLLECTION_NAME);
 }
 
 /**
@@ -49,13 +50,12 @@ export async function loadAllPostIts()
         return;
     }
 
-    const dataFromDatabase = await getDocs(collection);
+    const dataFromDatabase = await getDocs(postItCollection);
     const receivedData = dataFromDatabase.docs;
 
     receivedData.forEach(element => {
-        let data = element.data();
-
-        new PostIt(element.id, data.text, data.position, data.color);
+        const data = element.data();
+        new PostIt(data.text, data.position, data.color, element.id);
     });
 }
 
@@ -73,7 +73,7 @@ export async function addPostItToDatabase(postIt)
         return;
     }
 
-    const newDocument = await addDoc(collection, getDataFromPostIt(postIt));
+    const newDocument = await addDoc(postItCollection, getDataFromPostIt(postIt));
     return newDocument.id;
 }
 
@@ -87,7 +87,7 @@ export function removePostItFromDatabase(id)
     if (database === undefined)
     {
         console.warn("The database was not initialized yet");
-       return;
+        return;
     }
 
     deleteDoc(doc(database, COLLECTION_NAME, id));
@@ -119,7 +119,7 @@ function getDataFromPostIt(postIt)
 {
     return {
         text: postIt.text,
-        position = postIt.position,
+        position: postIt.position,
         color: postIt.color
     };
 }

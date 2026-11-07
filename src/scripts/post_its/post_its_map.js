@@ -9,6 +9,13 @@ const postItsMap = new Map();
 // ------------------------------------------------------
 
 /**
+ * Removes a post-it from the map
+ * @param {HTMLElement} element HTML element related to the post-it instance to remove
+ * @author Álvaro Fernández Barrero
+ */
+export const removeFromMap = element => postItsMap.delete(element);
+
+/**
  * Saves a post it under a HTML element
  * @param {HTMLElement} element HTML element related to the post-it instance
  * @param {PostIt} postIt Post-it to save under tge given HTML element
@@ -22,4 +29,4 @@ export const savePostItUnderHtmlElement = (element, postIt) => postItsMap.set(el
  * @returns The post-it object related to the given HTML
  * @author Álvaro Fernández Barrero
  */
-export const getPostItByElement = (element) => postItsMap.get(element);
+export const getPostItByElement = element => postItsMap.get(element);
