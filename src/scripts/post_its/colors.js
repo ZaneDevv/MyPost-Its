@@ -74,8 +74,6 @@ function setColor(event)
     if (target === undefined)
         return;
 
-    console.log("A");
-
     const postIt = getPostItByElement(target);
     postIt.color = event.target.id;
 }
@@ -100,5 +98,5 @@ export function initializeColors()
     setUpColors();
 
     document.addEventListener("mouseup", onInputClick);
-    document.addEventListener("touchend", onInputClick);
+    document.addEventListener("touchstart", onInputClick);
 }
