@@ -21,10 +21,14 @@
 }
 
 .post-it p {
+    overflow-wrap: anywhere;
+    
     width: 100%;
     height: 90%;
 
     bottom: 0;
+
+    padding: 0.3em;
 }
 
 .post-it-menu-colors {

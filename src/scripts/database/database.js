@@ -6,7 +6,7 @@ import {
     getDocs, addDoc, deleteDoc, updateDoc
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
-import { PostIt } from '../post_its/PostIt.js'
+import { PostIt } from '../post_its/PostIt.js';
 
 // ------------------------------------------------------
 // CONSTANTS
@@ -33,6 +33,9 @@ let postItCollection = undefined;
  */
 export function initializeDatabase()
 {
+    if (database !== undefined)
+        return;
+
     app = initializeApp(firebaseConfig);
     database = getFirestore(app);
     postItCollection = collection(database, COLLECTION_NAME);
@@ -40,6 +43,7 @@ export function initializeDatabase()
 
 /**
  * Loads all the post-its
+ * @returns {Array<PostIt>} All the loaded post-its
  * @author Álvaro Fernández Barrero
  */
 export async function loadAllPostIts()
@@ -47,31 +51,30 @@ export async function loadAllPostIts()
     if (database === undefined)
     {
         console.warn("The database was not initialized yet");
-        return;
+        return [];
     }
 
     const dataFromDatabase = await getDocs(postItCollection);
     const receivedData = dataFromDatabase.docs;
 
-    receivedData.forEach(element => {
+    const postIts = receivedData.map(element => {
         const data = element.data();
-        new PostIt(data.text, data.position, data.color, element.id);
+        return new PostIt(data.text, data.position, data.color, element.id);
     });
+
+    return postIts;
 }
 
 /**
  * Adds a new post-it to the database
  * @param {PostIt} postIt PostIt instance to get the data from
- * @return {Number} The id of the new post-it in the database
+ * @returns {String} The generated document ID
  * @author Álvaro Fernández Barrero
  */
 export async function addPostItToDatabase(postIt)
 {
     if (database === undefined)
-    {
-        console.warn("The database was not initialized yet");
-        return;
-    }
+        throw new Error("The database was not initialized yet");
 
     const newDocument = await addDoc(postItCollection, getDataFromPostIt(postIt));
     return newDocument.id;
@@ -79,41 +82,47 @@ export async function addPostItToDatabase(postIt)
 
 /**
  * Removes a post-it according to the given id
- * @param {Number} id Post-it's id to remove 
- * @author Álvaro Fernández Barrero 
+ * @param {String} id Post-it's id to remove
+ * @author Álvaro Fernández Barrero
  */
-export function removePostItFromDatabase(id)
+export async function removePostItFromDatabase(id)
 {
     if (database === undefined)
+        throw new Error("The database was not initialized yet");
+
+    if (!id)
     {
-        console.warn("The database was not initialized yet");
+        console.warn("Cannot remove post-it: missing id");
         return;
     }
 
-    deleteDoc(doc(database, COLLECTION_NAME, id));
+    await deleteDoc(doc(database, COLLECTION_NAME, id));
 }
 
 /**
  * Updates the saved data in the database from the given post-it instance
  * @param {PostIt} postIt PostIt instance to get the data from
- * @author Álvaro Fernández Barrero 
+ * @author Álvaro Fernández Barrero
  */
-export function updatePostItDataFromDatabase(postIt)
+export async function updatePostItDataFromDatabase(postIt)
 {
     if (database === undefined)
+        throw new Error("The database was not initialized yet");
+
+    if (!postIt.id)
     {
-        console.warn("The database was not initialized yet");
+        console.warn("Cannot update post-it: missing id");
         return;
     }
 
-    updateDoc(doc(database, COLLECTION_NAME, postIt.id), getDataFromPostIt(postIt));
+    await updateDoc(doc(database, COLLECTION_NAME, postIt.id), getDataFromPostIt(postIt));
 }
 
 /**
  * Gets the data from the given post-it
  * @param {PostIt} postIt PostIt instance to get the data from
- * @returns The given post-it's data
- * @author Álvaro Fernández Barrero 
+ * @returns {Object} The given post-it's data
+ * @author Álvaro Fernández Barrero
  */
 function getDataFromPostIt(postIt)
 {

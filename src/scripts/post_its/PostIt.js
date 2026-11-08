@@ -108,7 +108,11 @@ export class PostIt
 
         this.#textElement = document.createElement("p");
         this.#textElement.className = CLASS_POST_IT_TEXT;
-        this.#textElement.addEventListener("blur", () => this.#textElement.contentEditable = "false");
+        this.#textElement.innerHTML = this.text;
+        this.#textElement.addEventListener("blur", () => {
+            this.text = this.#textElement.textContent;
+            this.#textElement.contentEditable = "false";
+        });
 
         this.#menuColorButton = document.createElement("img");
         this.#menuColorButton.src = "./src/img/menu.svg";

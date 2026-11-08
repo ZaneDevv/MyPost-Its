@@ -58,6 +58,10 @@ export function initializeSwipper()
             startingY = event.clientY;
         }
     });
+
+    document.addEventListener("mouseup", _ => {
+        target = undefined;
+    });
     
     document.addEventListener("mousemove", event => {
         if (!target)
