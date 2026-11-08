@@ -37,8 +37,43 @@ function enableEditing()
 
     target.contentEditable = "true";
     target.focus();
+}
 
-    console.log(target);
+/**
+ * Disables the text editing in the given post-it
+ * @author Álvaro Fernández Barrero
+ */
+function disableEditing()
+{
+    if (!target)
+        return;
+
+    target.blur();
+    target = undefined;
+}
+
+/**
+ * Runs a method on the second input
+ * @param {Object} event Click/touch data
+ * @author Álvaro Fernández Barrero
+ */
+function onTap(event)
+{
+    if (event.target !== target)
+        disableEditing();
+
+    if (!isPostItText(event.target))
+        return;
+
+    target = event.target;
+
+    const now = Date.now();
+    const deltaTime = now - lastClick;
+
+    if (deltaTime <= MILLISECONDS_TO_WAIT_BETWEEN_CLICK)
+        enableEditing();
+
+    lastClick = now;
 }
 
 /**
@@ -47,16 +82,6 @@ function enableEditing()
  */
 export function initializeTextChanger()
 {
-    document.addEventListener("mouseup", event => {
-        if (!isPostItText(event.target))
-            return;
-
-        target = event.target;
-        let now = Date.now();
-
-        if (now - lastClick <= MILLISECONDS_TO_WAIT_BETWEEN_CLICK)
-            enableEditing();
-
-        lastClick = now;
-    });
+    document.addEventListener("mouseup", onTap);
+    document.addEventListener("touchstart", onTap);
 }

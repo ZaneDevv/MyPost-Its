@@ -37,16 +37,85 @@ export const getPostItMoving = () => movingTarget;
 const isPostItTopBar = element => element.className.toLowerCase().startsWith(CLASS_TOP_BAR_COLOR_PERFIX);
 
 /**
- * Drags the selected post-it
+ * Sets a new position to the target post-it
+ * @param {Number} x X coordinate
+ * @param {Number} y Y coordinate
+ * @author Álvaro Fernández Barrero
+ */
+function setPositionToTarget(x, y)
+{
+    if (!target)
+        return;
+
+    target.position = {x: x, y: y};
+}
+
+/**
+ * Drags the selected post-it (for mouse)
  * @param {Object} event Object with information about the mouse's current status
  * @author Álvaro Fernández Barrero
  */
-function drag(event)
+function dragWithMouse(event)
 {
-    target.position = {
-        x: Math.max(0, event.clientX - offsetX),
-        y: Math.max(0, event.clientY - offsetY)
-    };
+    if (!(event.clientX && event.clientY))
+        return;
+
+    setPositionToTarget(Math.max(0, event.clientX - offsetX), Math.max(0, event.clientY - offsetY));
+}
+
+/**
+ * Drags the selected post-it (for touch)
+ * @param {Object} event Object with information about the mouse's current status
+ * @author Álvaro Fernández Barrero
+ */
+function dragWithTouch(event)
+{
+    if (!event.touches)
+        return;
+
+    const finger = event.touches[0];
+    setPositionToTarget(Math.max(0, finger.clientX - offsetX), Math.max(0, finger.clientY - offsetY));
+}
+
+/**
+ * Method to fire when a key input is down
+ * @param {HTMLElement} inputTarget HTML element under the input 
+ * @param {Number} x X-cooridnate
+ * @param {Number} y Y-coordinate
+ * @author Álvaro Fernández Barrero
+ */
+function onInputDown(inputTarget, x, y)
+{
+    if (!isPostItTopBar(inputTarget))
+        return;
+    
+    target = getPostItByElement(inputTarget.parentElement);
+    
+    setTimeout(() => {
+        if (target === undefined)
+            return;
+        
+        movingTarget = target;
+        
+        offsetX = x - target.position.x;
+        offsetY = y - target.position.y;
+        
+        document.addEventListener("mousemove", dragWithMouse);
+        document.addEventListener("touchmove", dragWithTouch);
+    }, MILLISECONDS_TO_WAIT_TO_START_DRAGGING);
+}
+
+/**
+ * Method to fire when a key input is up back
+ * @author Álvaro Fernández Barrero
+ */
+function onInputUp()
+{
+    document.removeEventListener("mousemove", dragWithMouse);
+    document.removeEventListener("touchmove", dragWithTouch);
+
+    movingTarget = undefined;
+    target = undefined;
 }
 
 /**
@@ -57,30 +126,18 @@ export function initializeDraggingPostIts()
 {
     document.addEventListener("mousedown", event => {
         event.preventDefault();
-
-        if (!isPostItTopBar(event.target))
-            return;
-
-        target = getPostItByElement(event.target.parentElement);
-        
-        setTimeout(() => {
-            if (target === undefined)
-                return;
-
-            movingTarget = target;
-            
-            offsetX = event.clientX - target.position.x;
-            offsetY = event.clientY - target.position.y;
-            
-            document.addEventListener("mousemove", drag);
-        }, MILLISECONDS_TO_WAIT_TO_START_DRAGGING);
+        onInputDown(event.target, event.clientX, event.clientY);
     });
+
+    document.addEventListener("touchstart", event => {
+        const finger = event.touches[0];
+        onInputDown(event.target, finger.clientX, finger.clientY);
+    })
     
     document.addEventListener("mouseup", event => {
         event.preventDefault();
-        document.removeEventListener("mousemove", drag);
-
-        movingTarget = undefined;
-        target = undefined;
+        onInputUp();
     });
+
+    document.addEventListener("touchend", onInputUp);
 }
