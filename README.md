@@ -120,19 +120,6 @@ The workspace displays the created notes and allows users to interact with them 
 
 The interface aims to make these interactions as simple as possible, allowing users to focus on the information contained in their notes.
 
-### Possible Uses
-
-The application can be useful in different situations, such as:
-
-- Writing down reminders.
-- Organizing school assignments.
-- Keeping track of short tasks.
-- Saving ideas for future projects.
-- Creating simple lists.
-- Storing information that needs to be easily accessible.
-
-Although the application is relatively simple, it can be adapted to different everyday needs.
-
 ---
 
 ## Interface Design
@@ -261,25 +248,6 @@ Separating these resources helps improve code organization and makes future modi
 
 ---
 
-## Possible Improvements
-
-Although the application fulfills its basic purpose, several features could be considered for future versions.
-
-| Improvement | Description |
-|-------------|-------------|
-| **Search System** | Allow users to search for notes by their content. |
-| **Categories** | Organize notes into different groups. |
-| **Custom Colors** | Provide additional options for changing the appearance of notes. |
-| **Dark Mode** | Add an alternative interface theme. |
-| **Drag and Drop** | Allow users to rearrange notes manually. |
-| **Note Priorities** | Highlight notes according to their importance. |
-| **Responsive Design** | Further improve the interface on mobile devices. |
-| **Data Synchronization** | Explore options for accessing notes across different devices. |
-
-These improvements are potential extensions of the project and are not necessarily part of the current implementation.
-
----
-
 ## Academic Purpose
 
 This project was created for educational purposes as part of the process of learning and applying web development concepts.
@@ -289,23 +257,6 @@ Its development provides practical experience in areas such as interface design,
 Working on this application also helps develop important skills, including problem-solving, debugging, code organization, and documentation.
 
 The main focus of the project is not to create a commercial product, but to demonstrate the ability to develop a functional application based on a defined set of requirements.
-
----
-
-## Contributing
-
-The project is open-source, and suggestions or improvements are welcome.
-
-If you would like to contribute, you can follow the usual GitHub contribution process.
-
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Implement and test your modifications.
-4. Commit your changes.
-5. Push your branch to your fork.
-6. Open a pull request describing your contribution.
-
-Contributions can include bug fixes, interface improvements, documentation updates, or additional functionality.
 
 ---
 
