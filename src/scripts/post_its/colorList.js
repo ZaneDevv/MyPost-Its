@@ -1,6 +1,7 @@
 export const colorList = [
     "yellow",
     "pink",
+    "purple",
     "green",
     "blue",
     "peach",
