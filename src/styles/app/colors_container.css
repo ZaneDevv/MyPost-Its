@@ -1,0 +1,28 @@
+#colors-container {
+    background-color: var(--background-tertiary);
+
+    border-radius: 12px;
+    padding: 1em;
+
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+
+    height: auto;
+
+    position: absolute;
+
+    box-shadow: 0 0 1px 0 black;
+}
+
+.color {
+    border-radius: 50%;
+    border: 1px solid #0005;
+
+    width: 30px;
+    height: 30px;
+}
+
+.color:hover {
+    cursor: pointer
+}

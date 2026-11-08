@@ -1,6 +1,7 @@
 import { PostIt } from './post_its/PostIt.js';
 import { initializeMouseEvents } from './mouse.js';
 import { initializeDatabase, loadAllPostIts } from "./database/database.js";
+import { initializeColors } from "./post_its/colors.js";
 
 window.onload = () => {
     initializeDatabase();
@@ -13,4 +14,5 @@ window.onload = () => {
     });
 
     initializeMouseEvents();
+    initializeColors();
 }
