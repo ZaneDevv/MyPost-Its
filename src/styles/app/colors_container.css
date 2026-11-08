@@ -13,6 +13,8 @@
     position: absolute;
 
     box-shadow: 0 0 1px 0 black;
+
+    z-index: 100;
 }
 
 .color {

@@ -6,7 +6,7 @@
   ![Platform](https://img.shields.io/badge/platform-web-7198E6?style=flat-square)
   ![Open Source](https://img.shields.io/badge/open%20source-yes-9AD8B1)
   ![Purpose](https://img.shields.io/badge/purpose-academic-F2A5A0?style=flat-square)
-  ![version](https://img.shields.io/badge/version-1.1.2-blue?style=flat-square)
+  ![version](https://img.shields.io/badge/version-1.2.0-blue?style=flat-square)
 
 **Your thoughts, reminders, and little ideas. All in one place.**
 
