@@ -43,7 +43,7 @@ export function initializeDatabase()
 
 /**
  * Loads all the post-its
- * @returns {Array<PostIt>} All the loaded post-its
+ * @returns {Array} All the loaded post-its
  * @author Álvaro Fernández Barrero
  */
 export async function loadAllPostIts()
@@ -51,7 +51,7 @@ export async function loadAllPostIts()
     if (database === undefined)
     {
         console.warn("The database was not initialized yet");
-        return [];
+        return;
     }
 
     const dataFromDatabase = await getDocs(postItCollection);
@@ -74,7 +74,10 @@ export async function loadAllPostIts()
 export async function addPostItToDatabase(postIt)
 {
     if (database === undefined)
-        throw new Error("The database was not initialized yet");
+    {
+        console.warn("The database was not initialized yet");
+        return;
+    }
 
     const newDocument = await addDoc(postItCollection, getDataFromPostIt(postIt));
     return newDocument.id;
@@ -88,7 +91,10 @@ export async function addPostItToDatabase(postIt)
 export async function removePostItFromDatabase(id)
 {
     if (database === undefined)
-        throw new Error("The database was not initialized yet");
+    {
+        console.warn("The database was not initialized yet");
+        return;
+    }
 
     if (!id)
     {
@@ -107,7 +113,10 @@ export async function removePostItFromDatabase(id)
 export async function updatePostItDataFromDatabase(postIt)
 {
     if (database === undefined)
-        throw new Error("The database was not initialized yet");
+    {
+        console.warn("The database was not initialized yet");
+        return;
+    }
 
     if (!postIt.id)
     {
