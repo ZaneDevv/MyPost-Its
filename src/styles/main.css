@@ -11,8 +11,10 @@
 
 @import url(./layout/dimensions.css);
 @import url(./layout/header.css);
+@import url(./layout/main.css);
 @import url(./layout/footer.css);
 @import url(./layout/board.css);
+@import url(./layout/login.css);
 @import url(./layout/new_post_it_button.css);
 
 /* ------------------------------------------------------

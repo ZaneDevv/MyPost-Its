@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="&Aacute;lvaro Fern&aacute;ndez Barrero">
-        <meta name="description" content="Application for post-its">
+        <meta name="description" content="Application for post-its (academic purposes)">
 
         <link rel="icon" type="image/png" href="./favicon.png">
         <link rel="stylesheet" href="./src/styles/main.css">
@@ -21,11 +21,33 @@
         </header>
 
         <div id="colors-container"></div>
-
         <img id="new-post-it-button" src="./src/img/plus.svg">
 
-        <main id="board">
+        <main>
+            <div id="board">
 
+            </div>
+
+            <div id="login">
+                <h2>Login</h2>
+                <div id="login-by-email-and-password-container">
+                    <div class="login-input">
+                        <label for="email-input">E-mail:</label>
+                        <input required type="email" placeholder="email@domain.com" id="email-input">
+                    </div>
+    
+                    <div class="login-input">
+                        <label for="password-input">Password:</label>
+                        <input required type="password" id="password-input">
+                    </div>
+    
+                    <p id="login-by-email-and-password-button" class="input-login-button">Log in by email and password</p>
+                </div>
+
+                <div id="login-with-services-container">
+                    <p class="login-with-service input-login-button">Log in using Google</p>
+                </div>
+            </div>
         </main>
 
         <footer>

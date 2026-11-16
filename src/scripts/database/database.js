@@ -5,6 +5,11 @@ import {
     collection, doc,
     getDocs, addDoc, deleteDoc, updateDoc
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import {
+    getAuth,
+    signInWithEmailAndPassword, signInWithPopup, signOut,
+    GoogleAuthProvider
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js"
 
 import { PostIt } from '../post_its/PostIt.js';
 
@@ -20,6 +25,7 @@ const COLLECTION_NAME = "postit";
 
 let app = undefined;
 let database = undefined;
+let authentificator = undefined;
 
 let postItCollection = undefined;
 
@@ -38,6 +44,8 @@ export function initializeDatabase()
 
     app = initializeApp(firebaseConfig);
     database = getFirestore(app);
+    authentificator = getAuth(app);
+
     postItCollection = collection(database, COLLECTION_NAME);
 }
 
@@ -140,4 +148,36 @@ function getDataFromPostIt(postIt)
         position: postIt.position,
         color: postIt.color
     };
+}
+
+function signInWithApp(app)
+{
+    if (!authentificator)
+    {
+        console.warn("The authentificator is required!");
+        return;
+    }
+
+    signInWithPopup(authentificator, app)
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => console.log(`${error.code}: ${error.message}`));
+}
+
+export function signInWithGmail()
+{
+    signInWithApp(new GoogleAuthProvider());
+}
+
+export function signInWithUserAndPassword(user, password)
+{
+    signInWithEmailAndPassword(authentificator, user, password)
+        .then()
+        .catch(error => console.log(`${error.code}: ${error.message}`));
+}
+
+export function createNewUser()
+{
+
 }

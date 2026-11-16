@@ -1,0 +1,55 @@
+#login {
+    margin-right: auto;
+    margin-left: auto;
+
+    width: 100%;
+    max-width: 300px;
+
+    background-color: var(--background-secondary);
+    
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    
+    padding: 1rem;
+}
+
+#login > h2 {
+    text-align: center;
+}
+
+.login-input {
+    display: flex;
+    flex-direction: column;
+}
+
+#login-by-email-and-password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+#login-with-services-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-with-service, .input-login-button,
+.login-input input {
+    width: 100%;
+
+    border: 2px solid var(--border);
+    border-radius: 5px;
+
+    padding: 0.5rem;
+}
+
+.login-with-service, .input-login-button {
+    text-align: center;
+}
+
+.login-with-service:hover, .input-login-button:hover {
+    cursor: pointer;
+}
