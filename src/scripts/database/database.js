@@ -5,19 +5,14 @@ import {
     collection, doc,
     getDocs, addDoc, deleteDoc, updateDoc
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
-import {
-    getAuth,
-    signInWithEmailAndPassword, signInWithPopup, signOut,
-    GoogleAuthProvider
-} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js"
-
+import { userId } from './authenticator.js';
 import { PostIt } from '../post_its/PostIt.js';
 
 // ------------------------------------------------------
 // CONSTANTS
 // ------------------------------------------------------
 
-const COLLECTION_NAME = "postit";
+const COLLECTION_NAME_PREFIX = "postit";
 
 // ------------------------------------------------------
 // VARIABLES
@@ -25,9 +20,6 @@ const COLLECTION_NAME = "postit";
 
 let app = undefined;
 let database = undefined;
-let authentificator = undefined;
-
-let postItCollection = undefined;
 
 // ------------------------------------------------------
 // METHODS
@@ -44,9 +36,8 @@ export function initializeDatabase()
 
     app = initializeApp(firebaseConfig);
     database = getFirestore(app);
-    authentificator = getAuth(app);
 
-    postItCollection = collection(database, COLLECTION_NAME);
+    postItCollection = collection(database, COLLECTION_NAME_PREFIX);
 }
 
 /**
@@ -62,7 +53,7 @@ export async function loadAllPostIts()
         return;
     }
 
-    const dataFromDatabase = await getDocs(postItCollection);
+    const dataFromDatabase = await getDocs(collection(database, COLLECTION_NAME_PREFIX + userId));
     const receivedData = dataFromDatabase.docs;
 
     const postIts = receivedData.map(element => {
@@ -110,7 +101,7 @@ export async function removePostItFromDatabase(id)
         return;
     }
 
-    await deleteDoc(doc(database, COLLECTION_NAME, id));
+    await deleteDoc(doc(database, COLLECTION_NAME_PREFIX + userId, id));
 }
 
 /**
@@ -132,7 +123,7 @@ export async function updatePostItDataFromDatabase(postIt)
         return;
     }
 
-    await updateDoc(doc(database, COLLECTION_NAME, postIt.id), getDataFromPostIt(postIt));
+    await updateDoc(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), getDataFromPostIt(postIt));
 }
 
 /**
@@ -148,36 +139,4 @@ function getDataFromPostIt(postIt)
         position: postIt.position,
         color: postIt.color
     };
-}
-
-function signInWithApp(app)
-{
-    if (!authentificator)
-    {
-        console.warn("The authentificator is required!");
-        return;
-    }
-
-    signInWithPopup(authentificator, app)
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => console.log(`${error.code}: ${error.message}`));
-}
-
-export function signInWithGmail()
-{
-    signInWithApp(new GoogleAuthProvider());
-}
-
-export function signInWithUserAndPassword(user, password)
-{
-    signInWithEmailAndPassword(authentificator, user, password)
-        .then()
-        .catch(error => console.log(`${error.code}: ${error.message}`));
-}
-
-export function createNewUser()
-{
-
 }
