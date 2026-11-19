@@ -1,18 +1,25 @@
+import { getApp } from './firebase.js';
 import {
     getAuth, onAuthStateChanged,
     signInWithEmailAndPassword, signInWithPopup, signOut,
     GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js"
+import {
+    loadAllPostIts
+} from "./database.js"
 
 // ------------------------------------------------------
 // VARIABLES
 // ------------------------------------------------------
 
-const authentificator = getAuth();
+let authentificator = undefined;
+
+const profileImage = document.getElementById("profile-image");
 
 const emailInput = document.getElementById("email-input");
 const passwordInput = document.getElementById("password-input");
 const logInEmailAndPasswordButton = document.getElementById("login-by-email-and-password-button");
+const logInGoogleButton = document.getElementById("login-with-google-button");
 
 const boardMenu = document.getElementById("board");
 const loginMenu = document.getElementById("login");
@@ -102,6 +109,8 @@ function openBoardMenu()
  */
 export function initializeAuthentication()
 {
+    authentificator = getAuth(getApp());
+
     logInEmailAndPasswordButton.addEventListener("click", () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -112,14 +121,23 @@ export function initializeAuthentication()
         signInWithUserAndPassword(email, password);
     });
 
+    logInGoogleButton.addEventListener("click", signInWithGmail);
+
     onAuthStateChanged(authentificator, user => {
         if (user)
         {
-            console.log(user);
+            userId = user.uid;
             openBoardMenu();
+
+            profileImage.style.display = "block";
+            profileImage.src = user.photoURL;
+            profileImage.alt = `${user.displayName}'s profile`;
+
+            loadAllPostIts();
         }
         else
         {
+            profileImage.style.display = "none";
             openLoginMenu();
         }
     })

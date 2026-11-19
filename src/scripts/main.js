@@ -1,18 +1,15 @@
 import { PostIt } from './post_its/PostIt.js';
+import { initializeDatabase } from "./database/database.js";
+import { initializeAuthentication } from "./database/authenticator.js";
 import { initializeMouseEvents } from './mouse.js';
-import { initializeDatabase, loadAllPostIts } from "./database/database.js";
 import { initializeColors } from "./post_its/colors.js";
 
 window.onload = () => {
     initializeDatabase();
-    loadAllPostIts();
-
-    const newPostItButton = document.getElementById("new-post-it-button");
-
-    newPostItButton.addEventListener("click", () => {
-        new PostIt();
-    });
+    initializeAuthentication();
 
     initializeMouseEvents();
     initializeColors();
+    
+    document.getElementById("new-post-it-button").addEventListener("click", () => { new PostIt(); });
 }

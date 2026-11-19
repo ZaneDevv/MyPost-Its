@@ -68,7 +68,6 @@ function openColorsContainer(event)
  */
 function setColor(event)
 {
-    console.log(event.target)
     if (event.target.parentElement !== colorsContainer)
         return;
 

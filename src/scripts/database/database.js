@@ -1,5 +1,4 @@
-import { firebaseConfig } from './firebase_config.js';
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { getApp } from './firebase.js';
 import {
     getFirestore,
     collection, doc,
@@ -18,7 +17,6 @@ const COLLECTION_NAME_PREFIX = "postit";
 // VARIABLES
 // ------------------------------------------------------
 
-let app = undefined;
 let database = undefined;
 
 // ------------------------------------------------------
@@ -34,10 +32,7 @@ export function initializeDatabase()
     if (database !== undefined)
         return;
 
-    app = initializeApp(firebaseConfig);
-    database = getFirestore(app);
-
-    postItCollection = collection(database, COLLECTION_NAME_PREFIX);
+    database = getFirestore(getApp());
 }
 
 /**
@@ -78,7 +73,7 @@ export async function addPostItToDatabase(postIt)
         return;
     }
 
-    const newDocument = await addDoc(postItCollection, getDataFromPostIt(postIt));
+    const newDocument = await addDoc(collection(database, COLLECTION_NAME_PREFIX + userId), getDataFromPostIt(postIt));
     return newDocument.id;
 }
 
