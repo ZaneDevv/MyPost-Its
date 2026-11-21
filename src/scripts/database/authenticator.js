@@ -3,10 +3,9 @@ import {
     getAuth, onAuthStateChanged,
     signInWithEmailAndPassword, signInWithPopup, signOut,
     GoogleAuthProvider
-} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js"
-import {
-    loadAllPostIts
-} from "./database.js"
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import { loadAllPostIts } from "./database.js";
+import { removeFromMap } from '../post_its/post_its_map.js';
 
 // ------------------------------------------------------
 // VARIABLES
@@ -53,13 +52,10 @@ function signInWithApp(provider)
 }
 
 /**
- * Signs in with gmail
+ * Signs in with google
  * @author Álvaro Fernández Barrero
  */
-export function signInWithGmail()
-{
-    signInWithApp(new GoogleAuthProvider());
-}
+export const signInWithGoogle = () => signInWithApp(new GoogleAuthProvider());
 
 /**
  * Signs in with a user (email) and password
@@ -70,7 +66,6 @@ export function signInWithGmail()
 export function signInWithUserAndPassword(user, password)
 {
     signInWithEmailAndPassword(authentificator, user, password)
-        .then()
         .catch(error => console.log(`${error.code}: ${error.message}`));
 }
 
@@ -81,7 +76,6 @@ export function signInWithUserAndPassword(user, password)
 export function signUserOut()
 {
     signOut(authentificator)
-        .then()
         .catch(console.error);
 }
 
@@ -106,12 +100,29 @@ function openBoardMenu()
 }
 
 /**
+ * Cleans the whole board up removing all post-its
+ * @author Álvaro Fernández Barrero
+ */
+function cleanBoardUp()
+{
+    while (boardMenu.lastChild)
+    {
+        removeFromMap(boardMenu.lastChild);
+        boardMenu.lastChild.remove();
+    }
+}
+
+/**
  * Initializes the authentication enabling the needed events
  * @author Álvaro Fernández Barrero
  */
 export function initializeAuthentication()
 {
     authentificator = getAuth(getApp());
+
+    logInGoogleButton.addEventListener("click", signInWithGoogle);
+    signOutButton.addEventListener("click", signUserOut);
+    profileImage.addEventListener("click", () => signOutButton.style.display = signOutButton.style.display === "none" ? "block" : "none" );
 
     logInEmailAndPasswordButton.addEventListener("click", () => {
         const email = emailInput.value.trim();
@@ -123,16 +134,9 @@ export function initializeAuthentication()
         signInWithUserAndPassword(email, password);
     });
 
-    logInGoogleButton.addEventListener("click", signInWithGmail);
-    signOutButton.addEventListener("click", signUserOut);
-
-    profileImage.addEventListener("click", () => {
-        signOutButton.style.display = "block";
-    });
-
     onAuthStateChanged(authentificator, user => {
         signOutButton.style.display = "none";
-        
+
         if (user)
         {
             userId = user.uid;
@@ -148,6 +152,8 @@ export function initializeAuthentication()
         {
             profileImage.style.display = "none";
             openLoginMenu();
+
+            cleanBoardUp();
         }
     });
 }
