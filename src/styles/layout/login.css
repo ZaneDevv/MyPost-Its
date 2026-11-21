@@ -53,3 +53,16 @@
 .login-with-service:hover, .input-login-button:hover {
     cursor: pointer;
 }
+
+#profile-image:hover {
+    cursor: pointer;
+}
+
+#sign-out {
+    position: absolute;
+
+    max-width: 100px;
+    right: 10px;
+
+    display: none;
+}

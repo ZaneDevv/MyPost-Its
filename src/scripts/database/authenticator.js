@@ -24,6 +24,8 @@ const logInGoogleButton = document.getElementById("login-with-google-button");
 const boardMenu = document.getElementById("board");
 const loginMenu = document.getElementById("login");
 
+const signOutButton = document.getElementById("sign-out");
+
 export let userId = undefined;
 
 // ------------------------------------------------------
@@ -122,8 +124,15 @@ export function initializeAuthentication()
     });
 
     logInGoogleButton.addEventListener("click", signInWithGmail);
+    signOutButton.addEventListener("click", signUserOut);
+
+    profileImage.addEventListener("click", () => {
+        signOutButton.style.display = "block";
+    });
 
     onAuthStateChanged(authentificator, user => {
+        signOutButton.style.display = "none";
+        
         if (user)
         {
             userId = user.uid;
@@ -140,5 +149,5 @@ export function initializeAuthentication()
             profileImage.style.display = "none";
             openLoginMenu();
         }
-    })
+    });
 }
