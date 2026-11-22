@@ -1,0 +1,65 @@
+name: Deploy MyPost-Its
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare website
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '/.git/' \
+            --exclude '/.github/' \
+            --exclude '/_site/' \
+            --exclude '/.gitignore' \
+            ./ _site/
+          touch _site/.nojekyll
+
+      - name: Generate Firebase config
+        env:
+          FIREBASE_CONFIG_JS: ${{ secrets.FIREBASE_CONFIG_JS }}
+        run: |
+          if [ -z "$FIREBASE_CONFIG_JS" ]; then
+            echo "ERROR: FIREBASE_CONFIG_JS secret is missing"
+            exit 1
+          fi
+
+          mkdir -p _site/src/scripts/database
+
+          printf '%s\n' "$FIREBASE_CONFIG_JS" > \
+            _site/src/scripts/database/firebase_config.js
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
