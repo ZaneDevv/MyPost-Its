@@ -2,7 +2,8 @@ import { getApp } from './firebase.js';
 import {
     getFirestore,
     collection, doc,
-    getDocs, addDoc, deleteDoc, updateDoc
+    getDocs, addDoc, deleteDoc, updateDoc,
+    onSnapshot 
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { userId } from './authenticator.js';
 import { PostIt } from '../post_its/PostIt.js';
@@ -36,6 +37,20 @@ export function initializeDatabase()
 }
 
 /**
+ * Connects the snapshot to the given post-it to update it when another device alters it 
+ * @param {PostIt} postIt Post-it instance to be updatin gwith the snapshot
+ * @author Álvaro Fernández Barrero
+ */
+function connectSnapshot(postIt)
+{
+    onSnapshot(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), document => {
+        const data = document.data();
+        console.log(data);
+        postIt.updateProperties(data.text, data.color, data.position);
+    })
+}
+
+/**
  * Loads all the post-its
  * @returns {Array} All the loaded post-its
  * @author Álvaro Fernández Barrero
@@ -54,7 +69,8 @@ export async function loadAllPostIts()
     const postIts = receivedData.map(element => {
         const data = element.data();
         return new PostIt(data.text, data.position, data.color, element.id);
-    });
+    })
+    .forEach(connectSnapshot);
 
     return postIts;
 }
@@ -74,6 +90,8 @@ export async function addPostItToDatabase(postIt)
     }
 
     const newDocument = await addDoc(collection(database, COLLECTION_NAME_PREFIX + userId), getDataFromPostIt(postIt));
+    connectSnapshot(postIt);    
+
     return newDocument.id;
 }
 

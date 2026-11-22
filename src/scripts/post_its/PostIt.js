@@ -72,10 +72,7 @@ export class PostIt
 
         this.#isInitialized = true;
 
-        if (id === undefined)
-            this.ready = this.#addToDatabase();
-        else
-            this.ready = Promise.resolve();
+        this.ready = id ? Promise.resolve() : this.#addToDatabase();
     }
 
     // ------------------------------------------------------
@@ -160,6 +157,61 @@ export class PostIt
             await removePostItFromDatabase(this.#id);
     }
 
+    /**
+     * Updates the HTML text with the actual value in the instance
+     * @author Álvaro Fernández Barrero
+     */
+    #updateText()
+    {
+        this.#textElement.textContent = this.#text;
+    }
+
+    /**
+     * Updates the HTML color with the actual value in the instance
+     * @param {String} previousColor Previous color to remove
+     * @author Álvaro Fernández Barrero
+     */
+    #updateColor(previousColor)
+    {
+        this.#htmlElement.classList.replace(
+            `${CLASS_BACKGROUND_COLOR_PERFIX}${previousColor}`,
+            `${CLASS_BACKGROUND_COLOR_PERFIX}${this.#color}`
+        );
+        this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.#color}`;
+    }
+
+    /**
+     * Updates the HTML position with the actual value in the instance
+     * @author Álvaro Fernández Barrero
+     */
+    #updatePosition()
+    {
+        this.#htmlElement.style.left = `${this.#position.x}px`;
+        this.#htmlElement.style.top = `${this.#position.y}px`;
+    }
+
+    /**
+     * Updates all the post-it's properties to the given ones
+     * @param {String} text New text
+     * @param {String} color New color
+     * @param {Object} position New position
+     * @author Álvaro Fernández Barrero
+     */
+    updateProperties(text, color, position)
+    {
+        const previousColor = this.#color;
+
+        this.#text = text;
+        this.#color = color;
+
+        this.#position.x = position.x;
+        this.#position.y = position.y;
+
+        this.#updateColor(previousColor);
+        this.#updateText();
+        this.#updatePosition();
+    }
+
     // ------------------------------------------------------
     // GETTER & SETTER
     // ------------------------------------------------------
@@ -184,7 +236,8 @@ export class PostIt
             return;
 
         this.#text = value;
-        this.#textElement.textContent = value;
+
+        this.#updateText();
         this.#updateInDatabase();
     }
 
@@ -198,15 +251,14 @@ export class PostIt
         if (this.#removed)
             return;
 
-        if (this.#color === value)
+        const previousColor = this.#color;
+
+        if (previousColor === value)
             return;
 
-        this.#htmlElement.classList.remove(`${CLASS_BACKGROUND_COLOR_PERFIX}${this.#color}`);
         this.#color = value;
 
-        this.#htmlElement.classList.add(`${CLASS_BACKGROUND_COLOR_PERFIX}${value}`);
-        this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${value}`;
-
+        this.#updateColor(previousColor);
         this.#updateInDatabase();
     }
 
@@ -235,9 +287,7 @@ export class PostIt
         this.#position.x = x;
         this.#position.y = y;
 
-        this.#htmlElement.style.left = `${x}px`;
-        this.#htmlElement.style.top = `${y}px`;
-
+        this.#updatePosition();
         this.#updateInDatabase();
     }
 
