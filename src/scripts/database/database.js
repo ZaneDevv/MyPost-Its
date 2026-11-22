@@ -19,8 +19,10 @@ const COLLECTION_NAME_PREFIX = "postit";
 // ------------------------------------------------------
 
 let database = undefined;
+let creationalSnapshot = undefined;
 
 const postitSnapshotsMap = new Map();
+const postItsMap = new Map();
 
 // ------------------------------------------------------
 // METHODS
@@ -39,17 +41,72 @@ export function initializeDatabase()
 }
 
 /**
- * Connects the snapshot to the given post-it to update it when another device alters it 
- * @param {PostIt} postIt Post-it instance to be updatin gwith the snapshot
+ * Connects the creational snapshots
+ * @author Álvaro Fernández Barrero
+ */
+export function connectCreationalSnapshot()
+{
+    if (typeof creationalSnapshot == "function")
+        creationalSnapshot();
+
+    creationalSnapshot = onSnapshot(collection(database, COLLECTION_NAME_PREFIX + userId), snapshot => {
+        snapshot.docChanges().forEach(change => {
+            if (change.doc.metadata.hasPendingWrites)
+                return;
+            
+            const data = change.doc.data();
+
+            switch (change.type)
+            {
+            case "added":
+                if (!document.getElementById(change.doc.id))
+                    connectSnapshot(new PostIt(data.text, data.position, data.color, change.doc.id));
+
+                break;
+
+            case "removed":
+                const element = document.getElementById(change.doc.id);
+                console.log(element);
+                if (element)
+                    element.remove();
+
+                const unsubscribe = postitSnapshotsMap.get(change.doc.id);
+
+                if (unsubscribe)
+                {
+                    unsubscribe();
+                    postitSnapshotsMap.delete(change.doc.id);
+                }
+
+                postItsMap.delete(change.doc.id);
+
+                break;
+            }
+        });
+    });
+}
+
+/**
+ * Connects the snapshot to the given post-it to update it when another device alters it
+ * @param {PostIt} postIt Post-it instance to be updating with the snapshot
  * @author Álvaro Fernández Barrero
  */
 function connectSnapshot(postIt)
 {
-    postitSnapshotsMap.set(postIt.id, onSnapshot(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), document => {
-        if (!document.exists())
+    if (postitSnapshotsMap.has(postIt.id))
+        return;
+
+    postItsMap.set(postIt.id, postIt);
+
+    postitSnapshotsMap.set(postIt.id, onSnapshot(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), snapshot => {
+        if (!snapshot.exists())
             return;
-        
-        const data = document.data();
+
+        if (snapshot.metadata.hasPendingWrites)
+            return;
+
+        const data = snapshot.data();
+
         postIt.updateProperties(data.text, data.color, data.position);
     }));
 }
@@ -93,9 +150,7 @@ export async function addPostItToDatabase(postIt)
         return;
     }
 
-    const newDocument = await addDoc(collection(database, COLLECTION_NAME_PREFIX + userId), getDataFromPostIt(postIt));
-    connectSnapshot(postIt);    
-
+    const newDocument = await addDoc(collection(database, COLLECTION_NAME_PREFIX + userId), getDataFromPostIt(postIt));    
     return newDocument.id;
 }
 

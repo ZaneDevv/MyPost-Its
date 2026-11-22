@@ -5,7 +5,7 @@ import {
     signInWithPopup, signOut,
     GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
-import { loadAllPostIts } from "./database.js";
+import { loadAllPostIts, connectCreationalSnapshot } from "./database.js";
 import { removeFromMap } from '../post_its/post_its_map.js';
 
 // ------------------------------------------------------
@@ -169,7 +169,7 @@ function toggleBetweenCreatingAccountAndLogginIn()
  * @param {Object} user User that logged in's data
  * @author Álvaro Fernández Barrero
  */
-function onUserLogsIn(user)
+async function onUserLogsIn(user)
 {
     userId = user.uid;
     openBoardMenu();
@@ -178,7 +178,8 @@ function onUserLogsIn(user)
     profileImage.src = user.photoURL;
     profileImage.alt = `${user.displayName}'s profile`;
 
-    loadAllPostIts();
+    await loadAllPostIts();
+    connectCreationalSnapshot();
 }
 
 /**

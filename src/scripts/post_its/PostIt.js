@@ -86,6 +86,7 @@ export class PostIt
     async #addToDatabase()
     {
         this.#id = await addPostItToDatabase(this);
+        this.#htmlElement.id = this.#id;
     }
 
     /**
@@ -100,6 +101,7 @@ export class PostIt
         this.#htmlElement = document.createElement("div");
         this.#htmlElement.classList.add(POST_IT_CLASS);
         this.#htmlElement.classList.add(`${CLASS_BACKGROUND_COLOR_PERFIX}${this.color}`);
+        this.#htmlElement.id = this.#id;
 
         this.#topBar = document.createElement("div");
         this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.color}`;
