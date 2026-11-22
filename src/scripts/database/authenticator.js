@@ -206,6 +206,18 @@ export function initializeAuthentication()
 {
     authentificator = getAuth(getApp());
 
+    document.addEventListener("click", event => {
+        if (event.target === emailInput || event.target === passwordInput || event.target === repeatPasswordInput)
+        {
+            event.target.focus();
+            return;
+        }
+        
+        emailInput.blur();
+        passwordInput.blur();
+        repeatPasswordInput.blur();
+    })
+
     logInGoogleButton.addEventListener("click", signInWithGoogle);
     signOutButton.addEventListener("click", signUserOut);
     profileImage.addEventListener("click", () => signOutButton.style.display = signOutButton.style.display === "none" ? "block" : "none" );
