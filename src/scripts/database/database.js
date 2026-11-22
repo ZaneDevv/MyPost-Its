@@ -20,6 +20,8 @@ const COLLECTION_NAME_PREFIX = "postit";
 
 let database = undefined;
 
+const postitSnapshotsMap = new Map();
+
 // ------------------------------------------------------
 // METHODS
 // ------------------------------------------------------
@@ -43,11 +45,13 @@ export function initializeDatabase()
  */
 function connectSnapshot(postIt)
 {
-    onSnapshot(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), document => {
+    postitSnapshotsMap.set(postIt.id, onSnapshot(doc(database, COLLECTION_NAME_PREFIX + userId, postIt.id), document => {
+        if (!document.exists())
+            return;
+        
         const data = document.data();
-        console.log(data);
         postIt.updateProperties(data.text, data.color, data.position);
-    })
+    }));
 }
 
 /**
@@ -69,8 +73,8 @@ export async function loadAllPostIts()
     const postIts = receivedData.map(element => {
         const data = element.data();
         return new PostIt(data.text, data.position, data.color, element.id);
-    })
-    .forEach(connectSnapshot);
+    });
+    postIts.forEach(connectSnapshot);
 
     return postIts;
 }
@@ -112,6 +116,13 @@ export async function removePostItFromDatabase(id)
     {
         console.warn("Cannot remove post-it: missing id");
         return;
+    }
+
+    const cancelSnapshot = postitSnapshotsMap.get(id);
+    if (cancelSnapshot)
+    {
+        cancelSnapshot();
+        postitSnapshotsMap.delete(id);
     }
 
     await deleteDoc(doc(database, COLLECTION_NAME_PREFIX + userId, id));
