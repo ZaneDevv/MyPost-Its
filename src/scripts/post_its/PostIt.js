@@ -101,7 +101,8 @@ export class PostIt
             return;
 
         this.#htmlElement = document.createElement("div");
-        this.#htmlElement.classList = `${POST_IT_CLASS} ${CLASS_BACKGROUND_COLOR_PERFIX}${this.color}`;
+        this.#htmlElement.classList.add(POST_IT_CLASS);
+        this.#htmlElement.classList.add(`${CLASS_BACKGROUND_COLOR_PERFIX}${this.color}`);
 
         this.#topBar = document.createElement("div");
         this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${this.color}`;
@@ -200,9 +201,10 @@ export class PostIt
         if (this.#color === value)
             return;
 
+        this.#htmlElement.classList.remove(`${CLASS_BACKGROUND_COLOR_PERFIX}${this.#color}`);
         this.#color = value;
 
-        this.#htmlElement.classList = `${POST_IT_CLASS} ${CLASS_BACKGROUND_COLOR_PERFIX}${value}`;
+        this.#htmlElement.classList.add(`${CLASS_BACKGROUND_COLOR_PERFIX}${value}`);
         this.#topBar.className = `${CLASS_TOP_BAR_COLOR_PERFIX}${value}`;
 
         this.#updateInDatabase();

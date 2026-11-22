@@ -7,7 +7,7 @@ import { POST_IT_CLASS } from '../config/post_it.js'
 // ------------------------------------------------------
 
 const MINIMUM_MOVEMENT = 150;
-const EPSILON_Y = 100;
+const EPSILON_Y = 30;
 
 // ------------------------------------------------------
 // VARIABLES
@@ -38,19 +38,7 @@ const distance = (x, y) => Math.abs(x - y);
  * @returns True if the given HTML element has the given class, false otherwise
  * @author Álvaro Fernández Barrero
  */
-function hasClass(element, className)
-{
-    let found = false;
-    const classes = element.className.split(" ");
-
-    for (let i = 0; !found && i < classes.length; i++)
-    {
-        if (classes[i] === className)
-            found = true;
-    }
-
-    return found;
-}
+const hasClass = (element, className) => element.classList.contains(className);
 
 /**
  * Fires when the input is down

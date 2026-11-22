@@ -152,8 +152,6 @@ The application is developed using standard web technologies and cloud services.
 | **GitHub** | Hosts the source code repository. |
 | **GitHub Pages** | Hosts the publicly accessible application. |
 
-> **Database clarification:** MongoDB was also mentioned during project documentation, but its use and relationship to Firestore have not been verified. It is therefore not listed as a confirmed dependency. This section should be updated if the application actually uses both databases.
-
 ---
 
 ## Project Structure

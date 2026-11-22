@@ -32,7 +32,8 @@ function setUpColors()
     for (let color of colorList)
     {
         const div = document.createElement("div");
-        div.classList = `${COLOR_DIV_CLASS} ${CLASS_TOP_BAR_COLOR_PERFIX}${color}`;
+        div.classList.add(COLOR_DIV_CLASS);
+        div.classList.add(`${CLASS_TOP_BAR_COLOR_PERFIX}${color}`);
         div.id = color;
 
         colorsContainer.appendChild(div);
