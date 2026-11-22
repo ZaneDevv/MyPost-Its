@@ -63,21 +63,6 @@ The colors are defined in `src/scripts/post_its/colorList.js`:
 - Coral
 - Gray
 
-```javascript
-export const colorList = [
-    "yellow",
-    "pink",
-    "purple",
-    "green",
-    "blue",
-    "peach",
-    "orange",
-    "mint",
-    "coral",
-    "gray"
-];
-```
-
 These colors allow users to visually distinguish notes and organize their information according to their preferences.
 
 ---
