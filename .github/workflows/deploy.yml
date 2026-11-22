@@ -30,12 +30,14 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p _site
+
           rsync -a \
             --exclude '/.git/' \
             --exclude '/.github/' \
             --exclude '/_site/' \
             --exclude '/.gitignore' \
             ./ _site/
+
           touch _site/.nojekyll
 
       - name: Generate Firebase config
@@ -52,6 +54,18 @@ jobs:
           printf '%s\n' "$FIREBASE_CONFIG_JS" > \
             _site/src/scripts/database/firebase_config.js
 
+      - name: Verify generated files
+        run: |
+          echo "Checking website files..."
+
+          test -s _site/index.html
+          test -s _site/src/scripts/database/firebase_config.js
+
+          node --check \
+            _site/src/scripts/database/firebase_config.js
+
+          echo "All required files exist."
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -63,3 +77,8 @@ jobs:
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deployment successful
+        run: |
+          echo "MyPost-Its deployed successfully!"
+          echo "${{ steps.deployment.outputs.page_url }}"
