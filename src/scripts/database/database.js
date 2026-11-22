@@ -66,7 +66,6 @@ export function connectCreationalSnapshot()
 
             case "removed":
                 const element = document.getElementById(change.doc.id);
-                console.log(element);
                 if (element)
                     element.remove();
 

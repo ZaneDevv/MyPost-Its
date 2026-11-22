@@ -35,6 +35,8 @@ const loginMenu = document.getElementById("login");
 
 const accountErrorText = document.getElementById("account-error-text");
 
+const newPostItButton = document.getElementById("new-post-it-button");
+
 const errorMessages = {
     "auth/weak-password": "The password must contain at least 6 characters",
     "auth/invalid-email": "The given email is invalid"
@@ -174,6 +176,7 @@ async function onUserLogsIn(user)
     userId = user.uid;
     openBoardMenu();
 
+    newPostItButton.style.display = "block";
     profileImage.style.display = "block";
     profileImage.src = user.photoURL;
     profileImage.alt = `${user.displayName}'s profile`;
@@ -188,9 +191,10 @@ async function onUserLogsIn(user)
  */
 function onUserSignsOut()
 {
+    newPostItButton.style.display = "none";
     profileImage.style.display = "none";
-    openLoginMenu();
 
+    openLoginMenu();
     cleanBoardUp();
 }
 
