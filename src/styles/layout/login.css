@@ -50,14 +50,6 @@
     text-align: center;
 }
 
-.login-with-service:hover, .input-login-button:hover {
-    cursor: pointer;
-}
-
-#profile-image:hover {
-    cursor: pointer;
-}
-
 #sign-out {
     position: absolute;
 
@@ -65,4 +57,25 @@
     right: 10px;
 
     display: none;
+}
+
+#repeat-password {
+    display: none;
+}
+
+#already-has-account-button {
+    display: none;
+}
+
+.toggle-account-creator {
+    background-color: transparent;
+    border: 0;
+
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.login-with-service:hover, .input-login-button:hover,
+.toggle-account-creator:hover, #profile-image:hover {
+    cursor: pointer;
 }
