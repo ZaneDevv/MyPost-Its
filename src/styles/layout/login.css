@@ -59,6 +59,10 @@
     display: none;
 }
 
+#account-error-text {
+    color: var(--danger);
+}
+
 #repeat-password {
     display: none;
 }

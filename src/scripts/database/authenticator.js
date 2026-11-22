@@ -33,6 +33,13 @@ const signOutButton = document.getElementById("sign-out");
 const boardMenu = document.getElementById("board");
 const loginMenu = document.getElementById("login");
 
+const accountErrorText = document.getElementById("account-error-text");
+
+const errorMessages = {
+    "auth/weak-password": "The password must contain at least 6 characters",
+    "auth/invalid-email": "The given email is invalid"
+}
+
 export let userId = undefined;
 
 let creatingAccount = false;
@@ -73,14 +80,7 @@ export const signInWithGoogle = () => signInWithApp(new GoogleAuthProvider());
 function createAccountWithUserAndPassword(user, password)
 {
     createUserWithEmailAndPassword(authentificator, user, password)
-        .then(userCredential => {
-            console.log("Account created successfully!");
-            console.log("User ID:", userCredential.user.uid);
-        })
-        .catch(error => {
-            console.error("Firebase error code:", error.code);
-            console.error("Firebase error message:", error.message);
-        });
+        .catch(error => accountErrorText.textContent = errorMessages[error.code]);
 }
 
 /**
@@ -219,8 +219,6 @@ export function initializeAuthentication()
         else
             signInWithUserAndPassword(email, password);
         
-
-        emailInput.value = "";
         passwordInput.value = "",
         repeatPasswordInput.value = "";
     });
@@ -230,6 +228,9 @@ export function initializeAuthentication()
 
     onAuthStateChanged(authentificator, user => {
         signOutButton.style.display = "none";
+        accountErrorText.textContent = "";
+        emailInput.value = "";
+
         (user ? onUserLogsIn : onUserSignsOut)(user);
     });
 }
